@@ -1,10 +1,14 @@
 import requests as re
 from bs4 import BeautifulSoup
 
-URL = "https://www.eventective.com/ottawa-on/meeting-venues/?p=1-2"
+URL = "https://www.eventective.com/ottawa-on/wedding-venues/"
 page = re.get(URL)
 soup = BeautifulSoup(page.content, "html.parser")
-results = soup.find_all('a')
+
+results = soup.find_all('a', href=True)
 
 for result in results:
-    print(result.text.strip())
+    text = result.text.strip()
+    href = result['href']
+    if text:  # skip empty anchors
+        print(f"{text} -> {href}")
